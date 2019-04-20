@@ -1,28 +1,20 @@
 version: 2
 jobs:
-  security-checks:
-    working_directory: ~/repo
-    docker:
-    - image: docker:stable
-    steps:
-    - checkout
-    - setup_remote_docker
-    - run:
-        command: sh ci/security-checks.sh
-    - store_artifacts:
-        path: /tmp/artifacts/hawkeye_report.json
   build:
     docker:
-    - image: docker:stable
+    - image: circleci/python:3.7-stretch-node-browsers-legacy
     steps:
+    - checkout
+    - restore_cache:
+        key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
     - run:
-        command: echo "here goes your build steps"
-  tests:
-    docker:
-    - image: docker:stable
-    steps:
+        command: |
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install -r requirements.txt
     - run:
-        command: echo "here goes your tests steps"
+        name: setup Heroku
+
   deploy:
     working_directory: ~/repo
     docker:
