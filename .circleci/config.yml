@@ -1,9 +1,7 @@
 version: 2
 jobs:
   deploy:
-    docker:
-      - image: docker:stable-git
-      - image: python:3.7.3
+    machine: true
 
     steps:
     - checkout
