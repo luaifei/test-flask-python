@@ -11,4 +11,4 @@ COPY app.py /app.py
 RUN pip install -r requirements.txt
 
 # CMD
-CMD ["gunicorn -w 4 -b 0.0.0.0:$PORT -k gevent app:app]
+CMD gunicorn -w 4 -b 0.0.0.0:$PORT -k gevent app:app
